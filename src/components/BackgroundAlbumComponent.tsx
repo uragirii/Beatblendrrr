@@ -4,9 +4,10 @@ import { LinearGradient } from "expo-linear-gradient";
 
 interface Props {
   albumUrl: string;
+  startColor: string;
 }
 
-const BackgroundAlbumComponent = ({ albumUrl }: Props) => {
+const BackgroundAlbumComponent = ({ albumUrl, startColor }: Props) => {
   return (
     <View style={styles.blurImage}>
       <ImageBackground
@@ -17,7 +18,10 @@ const BackgroundAlbumComponent = ({ albumUrl }: Props) => {
       >
         <LinearGradient
           style={{ flex: 1 }}
-          colors={["#EB1C2488", "rgba(0,0,0,1)"]}
+          colors={[
+            startColor === "transparent" ? startColor : `${startColor}88`,
+            "rgba(0,0,0,1)",
+          ]}
         />
       </ImageBackground>
     </View>

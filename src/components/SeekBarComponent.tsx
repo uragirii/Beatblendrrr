@@ -34,7 +34,9 @@ const SeekBarComponent = ({
 const styles = StyleSheet.create({
   seekBar: {
     paddingBottom: 10,
-    marginBottom: 10,
+    marginBottom: 30,
+    marginLeft: 16,
+    marginRight: 16,
   },
 });
 

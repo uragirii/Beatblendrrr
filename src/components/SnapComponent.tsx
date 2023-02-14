@@ -1,43 +1,94 @@
-import { View, StyleSheet } from "react-native";
-import React, { useEffect } from "react";
+import { View, StyleSheet, Dimensions } from "react-native";
+import React, { useEffect, useState } from "react";
 import SongDetails from "./SongDetails";
 import LyricsLines from "./LyricsLines";
 import AlbumCoverComponent from "./AlbumCoverComponent";
 import BackgroundAlbumComponent from "./BackgroundAlbumComponent";
 import SeekBarComponent from "./SeekBarComponent";
 import ImageColors from "react-native-image-colors";
+import { Audio } from "expo-av";
+const { height } = Dimensions.get("screen");
 
-const ALBUM_ART =
-  "https://s.mxmcdn.net/images-storage/albums2/2/1/3/7/8/3/37387312_500_500.jpg";
+interface Props {
+  albumArt: string;
+  artistName: string;
+  trackName: string;
+  shouldPlay: boolean;
+  songUrl: string;
+}
 
-const SnapComponent = ({}) => {
+const SnapComponent = ({
+  albumArt,
+  artistName,
+  trackName,
+  shouldPlay,
+  songUrl,
+}: Props) => {
+  const [startColor, setStartColor] = useState("transparent");
+
+  const [sound, setSound] = useState<Audio.Sound>();
+
   useEffect(() => {
     (async () => {
-      const result = await ImageColors.getColors(ALBUM_ART, {
+      // @ts-ignore
+      const { sound } = await Audio.Sound.createAsync(songUrl);
+      setSound(sound);
+    })();
+  }, [songUrl]);
+
+  useEffect(() => {
+    if (shouldPlay) {
+      sound?.playAsync();
+      return;
+    }
+    sound?.pauseAsync();
+  }, [shouldPlay, sound]);
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log("Unloading Sound");
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  useEffect(() => {
+    (async () => {
+      const result = await ImageColors.getColors(albumArt, {
         fallback: "#228B22",
         cache: true,
       });
-      console.log(result.platform);
+      switch (result.platform) {
+        case "ios":
+          setStartColor(result.primary);
+          break;
+        case "android":
+          setStartColor(result.dominant ?? "transparent");
+          break;
+        case "web":
+          setStartColor(result.lightVibrant ?? "transparent");
+      }
     })();
-  }, []);
+  }, [albumArt]);
 
   return (
     <View style={styles.container}>
       <View style={styles.background}>
-        <BackgroundAlbumComponent albumUrl={ALBUM_ART} />
+        <BackgroundAlbumComponent albumUrl={albumArt} startColor={startColor} />
       </View>
       <View style={styles.foreground}>
         <View>
           <LyricsLines
-            firstLine="Ooooooh"
+            firstLine={shouldPlay ? "Playing" : "Not Playing"}
             secondLine="I blinded by the lights"
           />
         </View>
         <View style={styles.albumArt}>
-          <AlbumCoverComponent albumUrl={ALBUM_ART} />
+          <AlbumCoverComponent albumUrl={albumArt} />
         </View>
         <View>
-          <SongDetails artistName="The Weeknd" songName="Blinding Lights" />
+          <SongDetails artistName={artistName} songName={trackName} />
           <View>
             <SeekBarComponent
               setProgress={3}
@@ -53,7 +104,7 @@ const SnapComponent = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: "100%",
+    height,
     width: "100%",
   },
   albumArt: {

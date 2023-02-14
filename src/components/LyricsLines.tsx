@@ -9,7 +9,7 @@ interface Props {
 
 const LyricsLines = ({ firstLine, secondLine }: Props) => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.textStyle}>{firstLine}</Text>
       <Text style={styles.textStyle}>{secondLine}</Text>
     </View>
@@ -17,11 +17,16 @@ const LyricsLines = ({ firstLine, secondLine }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+    marginLeft: 16,
+  },
   textStyle: {
     fontStyle: "italic",
     fontWeight: "600",
     fontSize: 20,
     padding: 4,
+    marginTop: 16,
     color: "white",
   },
 });

@@ -23,12 +23,14 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     paddingBottom: 8,
     color: "white",
+    marginLeft: 16,
   },
   artist: {
     fontSize: 16,
     paddingBottom: 8,
     color: "white",
     marginBottom: 10,
+    marginLeft: 16,
   },
 });
 
