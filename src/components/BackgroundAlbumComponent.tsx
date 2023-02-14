@@ -17,7 +17,7 @@ const BackgroundAlbumComponent = ({ albumUrl }: Props) => {
       >
         <LinearGradient
           style={{ flex: 1 }}
-          colors={["transparent", "rgba(0,0,0,1)"]}
+          colors={["#EB1C2488", "rgba(0,0,0,1)"]}
         />
       </ImageBackground>
     </View>

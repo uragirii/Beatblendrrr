@@ -1,16 +1,30 @@
 import { View, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import SongDetails from "./SongDetails";
 import LyricsLines from "./LyricsLines";
 import AlbumCoverComponent from "./AlbumCoverComponent";
 import BackgroundAlbumComponent from "./BackgroundAlbumComponent";
 import SeekBarComponent from "./SeekBarComponent";
+import ImageColors from "react-native-image-colors";
+
+const ALBUM_ART =
+  "https://s.mxmcdn.net/images-storage/albums2/2/1/3/7/8/3/37387312_500_500.jpg";
 
 const SnapComponent = ({}) => {
+  useEffect(() => {
+    (async () => {
+      const result = await ImageColors.getColors(ALBUM_ART, {
+        fallback: "#228B22",
+        cache: true,
+      });
+      console.log(result.platform);
+    })();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.background}>
-        <BackgroundAlbumComponent albumUrl="https://s.mxmcdn.net/images-storage/albums2/2/1/3/7/8/3/37387312_500_500.jpg" />
+        <BackgroundAlbumComponent albumUrl={ALBUM_ART} />
       </View>
       <View style={styles.foreground}>
         <View>
@@ -20,7 +34,7 @@ const SnapComponent = ({}) => {
           />
         </View>
         <View style={styles.albumArt}>
-          <AlbumCoverComponent albumUrl="https://s.mxmcdn.net/images-storage/albums2/2/1/3/7/8/3/37387312_500_500.jpg" />
+          <AlbumCoverComponent albumUrl={ALBUM_ART} />
         </View>
         <View>
           <SongDetails artistName="The Weeknd" songName="Blinding Lights" />
