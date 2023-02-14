@@ -25,13 +25,21 @@ const SnapComponent = ({
   songUrl,
 }: Props) => {
   const [startColor, setStartColor] = useState("transparent");
-
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [sound, setSound] = useState<Audio.Sound>();
 
   useEffect(() => {
     (async () => {
       // @ts-ignore
       const { sound } = await Audio.Sound.createAsync(songUrl);
+      sound.setOnPlaybackStatusUpdate((playback) => {
+        if (playback.isLoaded) {
+          setDuration(playback.durationMillis ?? 0);
+          setProgress(playback.positionMillis / (playback.durationMillis ?? 1));
+        }
+        return;
+      });
       setSound(sound);
     })();
   }, [songUrl]);
@@ -47,7 +55,6 @@ const SnapComponent = ({
   useEffect(() => {
     return sound
       ? () => {
-          console.log("Unloading Sound");
           sound.unloadAsync();
         }
       : undefined;
@@ -81,7 +88,7 @@ const SnapComponent = ({
         <View>
           <LyricsLines
             firstLine={shouldPlay ? "Playing" : "Not Playing"}
-            secondLine="I blinded by the lights"
+            secondLine="Lyrics would appear here"
           />
         </View>
         <View style={styles.albumArt}>
@@ -91,9 +98,11 @@ const SnapComponent = ({
           <SongDetails artistName={artistName} songName={trackName} />
           <View>
             <SeekBarComponent
-              setProgress={3}
-              durationMilis={5}
-              sliderValue={4}
+              progress={progress}
+              seekBarColor={startColor}
+              onValueChange={(newValue) => {
+                sound?.setPositionAsync(newValue * duration).catch(console.log);
+              }}
             />
           </View>
         </View>

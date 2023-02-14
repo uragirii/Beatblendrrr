@@ -33,4 +33,10 @@ export const DEMO_SOUNDS = [
       "https://s.mxmcdn.net/images-storage/albums5/3/4/9/6/9/3/34396943_500_500.jpg",
     songUrl: "../../assets/Sound_4.mp3",
   },
+  {
+    name: "YOU GOT RICK ROLLED!!",
+    artistName: "Toyib Appu",
+    albumArt: "https://media.tenor.com/onTlUVMtWy4AAAAd/rickroll-rick.gif",
+    songUrl: "../../assets/Sound_5.mp3",
+  },
 ];

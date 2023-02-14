@@ -18,7 +18,7 @@ const LyricsLines = ({ firstLine, secondLine }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 32,
     marginLeft: 16,
   },
   textStyle: {

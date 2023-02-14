@@ -15,6 +15,7 @@ const SOUNDS = [
   require("../../../assets/Sound_2.mp3"),
   require("../../../assets/Sound_3.mp3"),
   require("../../../assets/Sound_4.mp3"),
+  require("../../../assets/Sound_5.mp3"),
 ];
 const { height } = Dimensions.get("screen");
 
